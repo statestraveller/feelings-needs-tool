@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Identify Your Needs</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        select, div {
+            margin-top: 10px;
+            padding: 10px;
+            font-size: 16px;
+        }
+        .container {
+            max-width: 400px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Identify Your Needs</h2>
+        <select id="categorySelect">
+            <option value="">I'm feeling...</option>
+        </select>
+        <select id="feelingSelect" style="display:none;"></select>
+        <div id="needsOutput" style="display:none;"></div>
+    </div>
+
+    <script>
+        const feelingsData = {
+            "I'm feeling good about the situation": {
+                "Affectionate": ["Friendly", "Loving", "Compassionate"],
+                "Engaged": ["Curious", "Absorbed"],
+                "Hopeful": ["Optimistic", "Encouraged"],
+                "Confident": ["Proud", "Empowered"],
+                "Excited": ["Energetic", "Enthusiastic"],
+                "Grateful": ["Appreciative", "Thankful"],
+                "Inspired": ["Wonder", "Awed"],
+                "Joyful": ["Happy", "Pleased"]
+            },
+            "I'm NOT feeling good about the situation": {
+                "Confused": ["Hesitant", "Lost"],
+                "Disconnected": ["Bored", "Indifferent"],
+                "Embarrassed": ["Self-conscious", "Ashamed"],
+                "Fatigued": ["Tired", "Exhausted"],
+                "Frustrated": ["Irritated", "Annoyed"],
+                "Sad": ["Unhappy", "Sorrowful"],
+                "Scared": ["Afraid", "Fearful"],
+                "Angry": ["Mad", "Furious"]
+            }
+        };
+
+        const feelingsToNeeds = {
+            "Affectionate": ["Connection", "Belonging", "Love", "Support", "Companionship"],
+            "Friendly": ["Community", "Acceptance", "Socialization", "Trust", "Respect"],
+            "Loving": ["Intimacy", "Affection", "Security", "Closeness", "Warmth"],
+            "Compassionate": ["Understanding", "Empathy", "Kindness", "Support", "Patience"],
+            "Engaged": ["Stimulation", "Involvement", "Learning", "Creativity", "Participation"],
+            "Curious": ["Exploration", "Discovery", "Knowledge", "Growth", "Inspiration"],
+            "Absorbed": ["Focus", "Engagement", "Dedication", "Flow", "Satisfaction"],
+            "Hopeful": ["Optimism", "Future Planning", "Encouragement", "Faith", "Possibility"],
+            "Optimistic": ["Positivity", "Encouragement", "Motivation", "Confidence", "Assurance"],
+            "Encouraged": ["Support", "Motivation", "Recognition", "Validation", "Empowerment"],
+            "Confident": ["Self-assurance", "Validation", "Competence", "Self-respect", "Autonomy"],
+            "Proud": ["Recognition", "Achievement", "Appreciation", "Self-worth", "Honor"],
+            "Empowered": ["Control", "Influence", "Independence", "Freedom", "Determination"],
+            "Excited": ["Anticipation", "Enthusiasm", "Inspiration", "Engagement", "Hope"],
+            "Energetic": ["Vitality", "Activity", "Health", "Well-being", "Drive"],
+            "Enthusiastic": ["Passion", "Drive", "Commitment", "Purpose", "Aspiration"],
+            "Grateful": ["Appreciation", "Thankfulness", "Recognition", "Acknowledgment", "Peace"],
+            "Appreciative": ["Recognition", "Gratitude", "Kindness", "Support", "Respect"],
+            "Thankful": ["Acknowledgment", "Gratitude", "Acceptance", "Joy", "Fulfillment"],
+            "Confused": ["Clarity", "Understanding", "Guidance", "Direction", "Support"],
+            "Lost": ["Reassurance", "Stability", "Security", "Navigation", "Connection"],
+            "Disconnected": ["Belonging", "Community", "Engagement", "Purpose", "Love"],
+            "Embarrassed": ["Acceptance", "Reassurance", "Self-worth", "Support", "Respect"],
+            "Fatigued": ["Rest", "Recovery", "Health", "Balance", "Energy"],
+            "Frustrated": ["Resolution", "Progress", "Understanding", "Patience", "Acceptance"],
+            "Sad": ["Comfort", "Compassion", "Healing", "Love", "Support"],
+            "Scared": ["Safety", "Reassurance", "Security", "Comfort", "Protection"],
+            "Angry": ["Fairness", "Respect", "Resolution", "Understanding", "Calm"]
+        };
+
+        const categorySelect = document.getElementById("categorySelect");
+        const feelingSelect = document.getElementById("feelingSelect");
+        const needsOutput = document.getElementById("needsOutput");
+
+        Object.keys(feelingsData).forEach(category => {
+            const option = document.createElement("option");
+            option.value = category;
+            option.textContent = category;
+            categorySelect.appendChild(option);
+        });
+
+        categorySelect.addEventListener("change", function() {
+            feelingSelect.innerHTML = '<option value="">I'm feeling...</option>';
+            needsOutput.style.display = "none";
+            feelingSelect.style.display = "none";
+
+            if (this.value) {
+                feelingSelect.style.display = "block";
+                Object.keys(feelingsData[this.value]).forEach(feeling => {
+                    const option = document.createElement("option");
+                    option.value = feeling;
+                    option.textContent = feeling;
+                    feelingSelect.appendChild(option);
+                });
+            }
+        });
+
+        feelingSelect.addEventListener("change", function() {
+            needsOutput.innerHTML = feelingsToNeeds[this.value] ? "<h3>Potential Needs:</h3><ul>" + feelingsToNeeds[this.value].map(need => `<li>${need}</li>`).join("") + "</ul>" : "";
+            needsOutput.style.display = "block";
+        });
+    </script>
+</body>
+</html>
